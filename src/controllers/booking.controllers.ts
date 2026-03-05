@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import { BookingService } from "../services/booking.service"
+import { Request, Response } from "express";
+import { BookingService } from "../services/booking.service";
 
 const bookingService = new BookingService();
 
@@ -9,11 +9,12 @@ export const getBookings = (req: Request, res: Response) => {
 };
 
 export const getBooking = (req: Request, res: Response) => {
-  const booking = bookingService.getBookingById(req.params.id);
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const booking = bookingService.getBookingById(id);
   if (booking) {
     res.json(booking);
   } else {
-    res.status(404).json({ message: 'Booking not found' });
+    res.status(404).json({ message: "Booking not found" });
   }
 };
 
@@ -23,19 +24,21 @@ export const createBooking = (req: Request, res: Response) => {
 };
 
 export const updateBookingStatus = (req: Request, res: Response) => {
-  const { id } = req.params;
+  const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const { status } = req.body;
   const updatedBooking = bookingService.updateBookingStatus(id, status);
-  
+
   if (updatedBooking) {
     res.json(updatedBooking);
   } else {
-    res.status(404).json({ message: 'Booking not found' });
+    res.status(404).json({ message: "Booking not found" });
   }
 };
 
 export const getBookingsByEmail = (req: Request, res: Response) => {
-  const { email } = req.params;
+  const email = Array.isArray(req.params.email)
+    ? req.params.email[0]
+    : req.params.email;
   const bookings = bookingService.getBookingsByEmail(email);
   res.json(bookings);
 };

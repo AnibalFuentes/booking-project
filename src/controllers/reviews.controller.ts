@@ -9,7 +9,8 @@ export const getReviews = (req: Request, res: Response) => {
 };
 
 export const getReviewsByService = (req: Request, res: Response) => {
-  const reviews = reviewService.getReviewsByService(req.params.serviceId);
+  const serviceId = Array.isArray(req.params.serviceId) ? req.params.serviceId[0] : req.params.serviceId;
+  const reviews = reviewService.getReviewsByService(serviceId);
   res.json(reviews);
 };
 
@@ -19,6 +20,7 @@ export const createReview = (req: Request, res: Response) => {
 };
 
 export const getAverageRating = (req: Request, res: Response) => {
-  const average = reviewService.getAverageRating(req.params.serviceId);
-  res.json({ serviceId: req.params.serviceId, average });
+  const serviceId = Array.isArray(req.params.serviceId) ? req.params.serviceId[0] : req.params.serviceId;
+  const average = reviewService.getAverageRating(serviceId);
+  res.json({ serviceId, average });
 };
